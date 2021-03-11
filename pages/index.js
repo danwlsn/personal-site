@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
 
       <About />
-      <Header title="Dan Wilson" sub="web3, python, crypto" showImage />
+      <Header title="Dan Wilson" sub="crypto, climbing, skateboards, web3" showImage />
       <Contact />
     </Layout>
   )
