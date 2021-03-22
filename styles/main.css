@@ -15,6 +15,12 @@ main {
   color: var(--c-olive);
 }
 
+h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  padding-top: 1rem;
+}
+
 p {
   font-size:1.5rem;
   font-weight: 100;
