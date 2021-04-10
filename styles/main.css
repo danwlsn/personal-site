@@ -1,41 +1,7 @@
-:root {
-  --c-eggshell: #fbfaee;
-  --c-olive: #3B413C;
-  --c-grey: #949494;
-  --c-pink: #F49FBC;
-  --c-green: #169873;
-  --c-blue: #3AAFB9;
-}
-body {
-  background-color: var(--c-eggshell);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-main {
-  padding: 2rem;
-  color: var(--c-olive);
+.contact-link {
+  @apply hover:text-pink-500 underline transition;
 }
-
-h1 {
-  font-size: 4rem;
-  font-weight: 900;
-  padding-top: 1rem;
-}
-
-p {
-  font-size:1.5rem;
-  font-weight: 100;
-  margin-bottom: 1rem;
-}
-
-a {
-  transition: color 280ms ease-in-out;
-}
-a:link,
-a:visited,
-a:active {
-  color: var(--c-grey);
-}
-a:hover {
-  color: var(--c-pink);
-}
-

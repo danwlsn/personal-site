@@ -1,17 +1,15 @@
-import styles from './contact.module.css'
-
 export default function Contact() {
   return (
     <>
-      <ul className={styles.list}>
+      <ul className="mt-8 leading-4">
         <li>
-          <a href="https://twitter.com/danwlsn">twitter</a>
+          <a href="https://twitter.com/danwlsn" className="contact-link">twitter</a>
         </li>
         <li>
-          <a href="https://github.com/danwlsn">github</a>
+          <a href="https://github.com/danwlsn" className="contact-link">github</a>
         </li>
         <li>
-          <a href="https://telegram.me/danwlsn">telgram</a>
+          <a href="https://telegram.me/danwlsn" className="contact-link">telgram</a>
         </li>
       </ul>
     </>
