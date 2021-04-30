@@ -1,10 +1,12 @@
+import client from '../lib/sanity'
 import Head from 'next/head'
 import Layout from '../components/layout'
 import Header from '../components/header'
 import About from '../components/about'
 import Contact from '../components/contact'
+import PostList from '../components/PostList/postList'
 
-export default function Home() {
+export default function Home({posts}) {
   return (
     <Layout>
       <Head>
@@ -15,6 +17,18 @@ export default function Home() {
       <About />
       <Header title="Dan Wilson" sub="crypto, climbing, skateboards, web3" showImage />
       <Contact />
+      <PostList posts={posts} />
     </Layout>
   )
+}
+
+export async function getStaticProps() {
+  const query = '*[_type == "post"] {title, slug, publishedAt}'
+  const data = await client.fetch(query)
+
+  return {
+    props: {
+      'posts': data
+    }
+  }
 }

@@ -32,8 +32,6 @@ PostTemplate.getInitialProps = async (context) => {
   const data = matter(content.default)
 
   return { ...data }
-
-  return { slug }
 }
 
 export default PostTemplate
