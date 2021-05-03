@@ -1,37 +1,46 @@
 import React from 'react'
-import matter from 'gray-matter'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
-
 import Head from 'next/head'
 import Layout from '../../components/layout'
+import client from '../../lib/sanity'
 
-function PostTemplate({ content, data }) {
-  const fm = data
-
-  console.log(moment(fm.date).format('MMMM Do YYYY'))
+function PostTemplate({ data }) {
 
   return (
     <Layout>
       <Head>
-        <title>{ fm.title } - Dan Wilson Blog</title>
+        <title>{ data.title } - Dan Wilson Blog</title>
       </Head>
       <div>
-        <h2>{ moment(fm.date).format('MMMM Do YYYY') }</h2>
-        <h1>{ fm.title }</h1>
-        <ReactMarkdown source={ content } />
+        <h2>{data.publishedAt }</h2>
+        <h1>{ data.title }</h1>
+        <ReactMarkdown source={ data.body } />
       </div>
     </Layout>
   )
 }
 
-PostTemplate.getInitialProps = async (context) => {
-  const { slug } = context.query
+export async function getStaticPaths() {
+  const query = '*[_type == "post" && !(_id in path("drafts.**"))] {slug}'
+  const data = await client.fetch(query)
 
-  const content = await import (`../../content/${slug}.md`)
-  const data = matter(content.default)
+  const paths = data.map((post) => ({
+    params: { slug: post.slug.current }
+  }))
 
-  return { ...data }
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const query = `*[_type == "post" && slug.current == "${params.slug}"][0] {_type, title, publishedAt, body}`
+  const data = await client.fetch(query)
+
+  return {
+    props: {
+      data: data
+    }
+  }
 }
 
 export default PostTemplate
