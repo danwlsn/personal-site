@@ -3,13 +3,13 @@ export default function Contact() {
     <>
       <ul className="my-8 leading-4">
         <li>
-          <a href="https://twitter.com/danwlsn" className="contact-link">twitter</a>
+          <a href="https://twitter.com/danwlsn" className="pu-link">twitter</a>
         </li>
         <li>
-          <a href="https://github.com/danwlsn" className="contact-link">github</a>
+          <a href="https://github.com/danwlsn" className="pu-link">github</a>
         </li>
         <li>
-          <a href="https://telegram.me/danwlsn" className="contact-link">telgram</a>
+          <a href="https://telegram.me/danwlsn" className="pu-link">telgram</a>
         </li>
       </ul>
     </>

@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__next{
-  height: 100%;
+.p-link {
+  @apply hover:text-pink-500 transition;
 }
-
-.contact-link {
-  @apply hover:text-pink-500 underline transition;
+.pu-link {
+  @apply p-link underline;
 }
