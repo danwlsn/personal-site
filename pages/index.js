@@ -7,6 +7,7 @@ import Contact from '../components/contact'
 import PostList from '../components/PostList/postList'
 
 export default function Home({posts}) {
+  console.log(posts)
   return (
     <Layout>
       <Head>
@@ -23,7 +24,7 @@ export default function Home({posts}) {
 }
 
 export async function getStaticProps() {
-  const query = '*[_type == "post"] {title, slug, publishedAt}'
+  const query = '*[_type == "post" && !(_id in path("drafts.**"))] {title, slug, publishedAt}'
   const data = await client.fetch(query)
 
   return {

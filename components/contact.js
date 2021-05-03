@@ -1,7 +1,7 @@
 export default function Contact() {
   return (
     <>
-      <ul className="mt-8 leading-4">
+      <ul className="my-8 leading-4">
         <li>
           <a href="https://twitter.com/danwlsn" className="contact-link">twitter</a>
         </li>
