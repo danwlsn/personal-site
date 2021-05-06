@@ -6,7 +6,7 @@ import About from '../components/about'
 import Contact from '../components/contact'
 import PostList from '../components/PostList/postList'
 
-export default function Home({posts}) {
+export default function Home({posts, now}) {
   return (
     <Layout>
       <Head>
@@ -23,12 +23,13 @@ export default function Home({posts}) {
 }
 
 export async function getStaticProps() {
-  const query = '*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {title, slug, publishedAt}'
+  const query = '{"posts": *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {title, slug, publishedAt}, "now": *[_type == "now" && !(_id in path("drafts.**"))]|order(publishedAt desc){body, publishedAt}}'
   const data = await client.fetch(query)
 
   return {
     props: {
-      'posts': data
+      'posts': data.posts,
+      'now': data.now
     }
   }
 }
