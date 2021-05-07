@@ -41,6 +41,11 @@ export default {
       title: 'Body',
       type: 'markdown',
     },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'string',
+    },
   ],
 
   preview: {
