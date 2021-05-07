@@ -12,6 +12,11 @@ function PostTemplate({ data }) {
     <Layout>
       <Head>
         <title>{ data.title } - Dan Wilson Blog</title>
+        <meta name="twitter:card" content="summary"></meta>
+        <meta name="twitter:site" content="@danwlsn" />
+        <meta name="twitter:creator" content="@danwlsn" />
+        <meta property="og:url" content={`https://danwilson.co/posts/${data.slug.current}`} />
+        <meta property="og:title" content={ data.title } />
       </Head>
       <div>
         <h2 className="text-xs">{ momentDate }</h2>
@@ -36,7 +41,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const query = `*[_type == "post" && slug.current == "${params.slug}"][0] {_type, title, publishedAt, body}`
+  const query = `*[_type == "post" && slug.current == "${params.slug}"][0] {_type, title, publishedAt, body, slug}`
   const data = await client.fetch(query)
 
   return {
