@@ -88,7 +88,23 @@ class Flowfield extends Component {
   }
 
   componentDidMount(){
+    console.log('did mount');
     const p5 = require("p5");
+    if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
+        // (optional) Do something before API request prompt.
+        DeviceMotionEvent.requestPermission()
+            .then( response => {
+            // (optional) Do something after API prompt dismissed.
+            if ( response == "granted" ) {
+                window.addEventListener( "devicemotion", (e) => {
+                    // do something for 'e' here.
+                })
+            }
+        })
+            .catch( console.error )
+    } else {
+        //alert( "DeviceMotionEvent is not defined" );
+    }
     this.sketch = new p5( p => {
 
       p.setup = ()  => {
