@@ -92,7 +92,12 @@ class Flowfield extends Component {
     this.sketch = new p5( p => {
 
       p.setup = ()  => {
-        p.createCanvas(600, 600);
+        if (window.innerWidth < 600) {
+          p.createCanvas(window.innerWidth-50, window.innerWidth-50);
+        } else {
+          p.createCanvas(600, 600);
+        }
+
         p.pixelDensity(1);
         cols = Math.floor(p.width / scl);
         rows = Math.floor(p.height / scl);
