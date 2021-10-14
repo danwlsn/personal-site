@@ -85,11 +85,11 @@ class Flowfield extends Component {
   constructor(){
     super()
     this.renderRef = React.createRef()
+    this.requestPermission = this.requestPermission.bind(this);
   }
 
-  componentDidMount(){
-    console.log('did mount');
-    const p5 = require("p5");
+  requestPermission(e) {
+    e.preventDefault();
     if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
         // (optional) Do something before API request prompt.
         DeviceMotionEvent.requestPermission()
@@ -103,8 +103,11 @@ class Flowfield extends Component {
         })
             .catch( console.error )
     } else {
-        //alert( "DeviceMotionEvent is not defined" );
+        console.log( "DeviceMotionEvent is not defined" );
     }
+  }
+  componentDidMount(){
+    const p5 = require("p5");
     this.sketch = new p5( p => {
 
       p.setup = ()  => {
@@ -164,6 +167,9 @@ class Flowfield extends Component {
         <div ref={this.renderRef}></div>
 
         <p className="text-xl font-thin mb-2 text-center">Particles on a flowfield. A demonstration of noise.</p>
+        <div className="content-center">
+          <button onClick={this.requestPermission} className="bg-green-100 p-2 mx-auto mb-2 block lg:hidden">Play for mobile</button>
+        </div>
       </>
     );
   }
