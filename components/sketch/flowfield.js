@@ -86,80 +86,85 @@ class Flowfield extends Component {
     super()
     this.renderRef = React.createRef()
     this.requestPermission = this.requestPermission.bind(this);
+    this.needPermission = ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" );
   }
 
   requestPermission(e) {
     e.preventDefault();
-    if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
-        // (optional) Do something before API request prompt.
-        DeviceMotionEvent.requestPermission()
-            .then( response => {
-            // (optional) Do something after API prompt dismissed.
-            if ( response == "granted" ) {
-                window.addEventListener( "devicemotion", (e) => {
-                    // do something for 'e' here.
-                })
-            }
+    if (this.needPermission) {
+      // (optional) Do something before API request prompt.
+      let _this = this;
+      DeviceMotionEvent.requestPermission()
+        .then( response => {
+          // (optional) Do something after API prompt dismissed.
+          if ( response == "granted" ) {
+            window.addEventListener( "devicemotion", (e) => {
+              // do something for 'e' here.
+              _this.needPermission = false;
+              _this.componentDidMount();
+            })
+          }
         })
-            .catch( console.error )
+        .catch( console.error )
     } else {
-        console.log( "DeviceMotionEvent is not defined" );
+      console.log( "DeviceMotionEvent is not defined" );
     }
   }
   componentDidMount(){
-    const p5 = require("p5");
-    this.sketch = new p5( p => {
+    if(!this.permission){
+      const p5 = require("p5");
+      this.sketch = new p5( p => {
 
-      p.setup = ()  => {
-        if (window.innerWidth < 600) {
-          p.createCanvas(window.innerWidth-50, window.innerWidth-50);
-        } else {
-          p.createCanvas(600, 600);
-        }
-
-        p.pixelDensity(1);
-        cols = Math.floor(p.width / scl);
-        rows = Math.floor(p.height / scl);
-        fr = p.createP('');
-        flowfield = new Array(cols * rows);
-
-        for (var i = 0; i < particleCount; i++) {
-          particles[i] = new Particle(p);
-        }
-
-        p.background(0);
-
-      }
-
-      p.draw = () => {
-        let yoff = 0;
-        for (var y = 0; y < rows; y++){
-          var xoff = 0;
-          for (var x = 0; x < cols; x++){
-            var index = x + y * cols;
-            var angle = p.noise(xoff, yoff, zoff) * p.TWO_PI * 4;
-            var v = p5.Vector.fromAngle(angle);
-            v.setMag(0.2);
-            flowfield[index] = v;
-            xoff += inc;
-
+        p.setup = ()  => {
+          if (window.innerWidth < 600) {
+            p.createCanvas(window.innerWidth-50, window.innerWidth-50);
+          } else {
+            p.createCanvas(600, 600);
           }
-          yoff += inc;
+
+          p.pixelDensity(1);
+          cols = Math.floor(p.width / scl);
+          rows = Math.floor(p.height / scl);
+          fr = p.createP('');
+          flowfield = new Array(cols * rows);
+
+          for (var i = 0; i < particleCount; i++) {
+            particles[i] = new Particle(p);
+          }
+
+          p.background(0);
+
         }
-        zoff += time;
 
-        for (var i = 0; i < particles.length; i++){
-          particles[i].follow(flowfield);
-          particles[i].update();
-          particles[i].edges();
-          particles[i].show();
+        p.draw = () => {
+          let yoff = 0;
+          for (var y = 0; y < rows; y++){
+            var xoff = 0;
+            for (var x = 0; x < cols; x++){
+              var index = x + y * cols;
+              var angle = p.noise(xoff, yoff, zoff) * p.TWO_PI * 4;
+              var v = p5.Vector.fromAngle(angle);
+              v.setMag(0.2);
+              flowfield[index] = v;
+              xoff += inc;
+
+            }
+            yoff += inc;
+          }
+          zoff += time;
+
+          for (var i = 0; i < particles.length; i++){
+            particles[i].follow(flowfield);
+            particles[i].update();
+            particles[i].edges();
+            particles[i].show();
+          }
+
         }
-
-      }
-    });
-
-
+      });
+    }
   }
+
   render(){
 
     return (
